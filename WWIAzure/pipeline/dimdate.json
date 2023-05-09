@@ -1,0 +1,394 @@
+{
+	"name": "dimdate",
+	"properties": {
+		"activities": [
+			{
+				"name": "dimdate",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "DateKey",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "DateKey",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "Date",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "Date",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "FullDate",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "FullDate",
+									"type": "String",
+									"physicalType": "char"
+								}
+							},
+							{
+								"source": {
+									"name": "DayOfMonth",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "DayOfMonth",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "DayName",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "DayName",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "DayOfWeek",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "DayOfWeek",
+									"type": "String",
+									"physicalType": "char"
+								}
+							},
+							{
+								"source": {
+									"name": "DayOfWeekInMonth",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "DayOfWeekInMonth",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "DayOfWeekInYear",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "DayOfWeekInYear",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "DayOfQuarter",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "DayOfQuarter",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "DayOfYear",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "DayOfYear",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "WeekOfMonth",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "WeekOfMonth",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "WeekOfQuarter",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "WeekOfQuarter",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "WeekOfYear",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "WeekOfYear",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Month",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Month",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "MonthName",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "MonthName",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "MonthOfQuarter",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "MonthOfQuarter",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Quarter",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "Quarter",
+									"type": "String",
+									"physicalType": "char"
+								}
+							},
+							{
+								"source": {
+									"name": "QuarterName",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "QuarterName",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Year",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "Year",
+									"type": "String",
+									"physicalType": "char"
+								}
+							},
+							{
+								"source": {
+									"name": "YearName",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "YearName",
+									"type": "String",
+									"physicalType": "char"
+								}
+							},
+							{
+								"source": {
+									"name": "MonthYear",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "MonthYear",
+									"type": "String",
+									"physicalType": "char"
+								}
+							},
+							{
+								"source": {
+									"name": "MMYYYY",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "MMYYYY",
+									"type": "String",
+									"physicalType": "char"
+								}
+							},
+							{
+								"source": {
+									"name": "FirstDayOfMonth",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "FirstDayOfMonth",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "LastDayOfMonth",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "LastDayOfMonth",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "FirstDayOfQuarter",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "FirstDayOfQuarter",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "LastDayOfQuarter",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "LastDayOfQuarter",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "FirstDayOfYear",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "FirstDayOfYear",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "LastDayOfYear",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "LastDayOfYear",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_dimdate",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "dw_dimdate",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2023-05-06T15:57:59Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,302 @@
+{
+	"name": "factsales",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_stagingsales",
+						"type": "DatasetReference"
+					},
+					"name": "stagingsales"
+				},
+				{
+					"dataset": {
+						"referenceName": "dw_dimcus",
+						"type": "DatasetReference"
+					},
+					"name": "dimcus"
+				},
+				{
+					"dataset": {
+						"referenceName": "dw_dimdate",
+						"type": "DatasetReference"
+					},
+					"name": "dimdate"
+				},
+				{
+					"dataset": {
+						"referenceName": "dw_dimloc",
+						"type": "DatasetReference"
+					},
+					"name": "dimloc"
+				},
+				{
+					"dataset": {
+						"referenceName": "dw_dimemp",
+						"type": "DatasetReference"
+					},
+					"name": "dimemp"
+				},
+				{
+					"dataset": {
+						"referenceName": "dw_dimstockitem",
+						"type": "DatasetReference"
+					},
+					"name": "dimstockitem"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "factsales",
+						"type": "DatasetReference"
+					},
+					"name": "factsales"
+				}
+			],
+			"transformations": [
+				{
+					"name": "selectcus"
+				},
+				{
+					"name": "selectdate"
+				},
+				{
+					"name": "selectloc"
+				},
+				{
+					"name": "selectemp"
+				},
+				{
+					"name": "selectstockitem"
+				},
+				{
+					"name": "lookupcus"
+				},
+				{
+					"name": "lookupdate"
+				},
+				{
+					"name": "lookuploc"
+				},
+				{
+					"name": "lookupemp"
+				},
+				{
+					"name": "lookupstockitem"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          InvoiceID as integer,",
+				"          CustomerID as integer,",
+				"          DeliveryCityID as integer,",
+				"          StockItemID as integer,",
+				"          SalespersonPersonID as integer,",
+				"          PackedByPersonID as integer,",
+				"          Quantity as integer,",
+				"          UnitPrice as decimal(18,2),",
+				"          TaxRate as decimal(18,3),",
+				"          TaxAmount as decimal(18,2),",
+				"          LineProfit as decimal(18,2),",
+				"          ExtendedPrice as decimal(18,2),",
+				"          TotalDryItems as integer,",
+				"          TotalChillerItems as integer,",
+				"          InvoiceDate as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: '\\\\r\\nSELECT \\\\r\\nil.[InvoiceID],\\\\r\\niv.[CustomerID],\\\\r\\ncus.DeliveryCityID,\\\\r\\n[StockItemID],\\\\r\\n[SalespersonPersonID],\\\\r\\n[PackedByPersonID],\\\\r\\n[Quantity],\\\\r\\n[UnitPrice],\\\\r\\n[TaxRate],\\\\r\\n[TaxAmount],\\\\r\\n[LineProfit],\\\\r\\n[ExtendedPrice],\\\\r\\n[TotalDryItems],\\\\r\\n[TotalChillerItems],\\\\r\\n[InvoiceDate]\\\\r\\nFROM [Sales].[InvoiceLines] as il \\\\r\\njoin [Sales].[Invoices] as iv on il.[InvoiceID] = iv.[InvoiceID]\\\\r\\njoin [Sales].[Customers] as cus on iv.CustomerID = cus.CustomerID\\\\r\\n',",
+				"     format: 'query') ~> stagingsales",
+				"source(output(",
+				"          CustomerKey as integer,",
+				"          CustomerId as integer,",
+				"          CustomerName as string,",
+				"          CategoryName as string,",
+				"          AccountOpenedDate as date,",
+				"          PrimaryContactPersonID as integer,",
+				"          PotalCode as string,",
+				"          PhoneNumber as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> dimcus",
+				"source(output(",
+				"          DateKey as date,",
+				"          Date as timestamp,",
+				"          FullDate as string,",
+				"          DayOfMonth as string,",
+				"          DayName as string,",
+				"          DayOfWeek as string,",
+				"          DayOfWeekInMonth as string,",
+				"          DayOfWeekInYear as string,",
+				"          DayOfQuarter as string,",
+				"          DayOfYear as string,",
+				"          WeekOfMonth as string,",
+				"          WeekOfQuarter as string,",
+				"          WeekOfYear as string,",
+				"          Month as string,",
+				"          MonthName as string,",
+				"          MonthOfQuarter as string,",
+				"          Quarter as string,",
+				"          QuarterName as string,",
+				"          Year as string,",
+				"          YearName as string,",
+				"          MonthYear as string,",
+				"          MMYYYY as string,",
+				"          FirstDayOfMonth as date,",
+				"          LastDayOfMonth as date,",
+				"          FirstDayOfQuarter as date,",
+				"          LastDayOfQuarter as date,",
+				"          FirstDayOfYear as date,",
+				"          LastDayOfYear as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> dimdate",
+				"source(output(",
+				"          LocationKey as integer,",
+				"          CityID as integer,",
+				"          CityName as string,",
+				"          StateProvinceName as string,",
+				"          SalesTerritory as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> dimloc",
+				"source(output(",
+				"          EmployeeKey as integer,",
+				"          EmployeeId as integer,",
+				"          FullName as string,",
+				"          PreferredName as string,",
+				"          IsSalesperson as boolean,",
+				"          PhoneNumber as string,",
+				"          FaxNumber as string,",
+				"          EmailAddress as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> dimemp",
+				"source(output(",
+				"          StockItemKey as integer,",
+				"          StockItemID as integer,",
+				"          StockItemName as string,",
+				"          UnitPrice as decimal(18,2),",
+				"          Brand as string,",
+				"          Size as string,",
+				"          IsChillerStock as boolean,",
+				"          LeadTimeDays as integer,",
+				"          ColorName as string,",
+				"          QuantityPerOuter as integer,",
+				"          Barcode as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> dimstockitem",
+				"dimcus select(mapColumn(",
+				"          CustomerId,",
+				"          CustomerKey",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> selectcus",
+				"dimdate select(mapColumn(",
+				"          Date,",
+				"          DateKey",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> selectdate",
+				"dimloc select(mapColumn(",
+				"          CityID,",
+				"          LocationKey",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> selectloc",
+				"dimemp select(mapColumn(",
+				"          EmployeeId,",
+				"          EmployeeKey",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> selectemp",
+				"dimstockitem select(mapColumn(",
+				"          StockItemID,",
+				"          StockIemKey = StockItemKey",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> selectstockitem",
+				"stagingsales, selectcus lookup(stagingsales@CustomerID == selectcus@CustomerId,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookupcus",
+				"lookupcus, selectdate lookup(InvoiceDate == DateKey,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookupdate",
+				"lookupdate, selectloc lookup(DeliveryCityID == CityID,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookuploc",
+				"lookuploc, selectemp lookup(SalespersonPersonID == EmployeeId,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookupemp",
+				"lookupemp, selectstockitem lookup(stagingsales@StockItemID == selectstockitem@StockItemID,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookupstockitem",
+				"lookupstockitem sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          SaleKey as integer,",
+				"          EmployeeKey as integer,",
+				"          LocationKey as integer,",
+				"          CustomerKey as integer,",
+				"          StockItemKey as integer,",
+				"          DateKey as date,",
+				"          InvoiceID as integer,",
+				"          Quantity as integer,",
+				"          UnitPrice as decimal(18,2),",
+				"          TaxRate as decimal(18,3),",
+				"          TaxAmount as decimal(18,2),",
+				"          LineProfit as decimal(18,2),",
+				"          TotalCost as decimal(18,2),",
+				"          ExtendedPrice as decimal(18,2),",
+				"          TotalExcludingTax as decimal(18,2),",
+				"          TotalDryItems as integer,",
+				"          TotalChillerItems as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          EmployeeKey,",
+				"          LocationKey,",
+				"          CustomerKey,",
+				"          StockItemKey = StockIemKey,",
+				"          DateKey,",
+				"          InvoiceID,",
+				"          Quantity,",
+				"          UnitPrice,",
+				"          TaxRate,",
+				"          TaxAmount,",
+				"          LineProfit,",
+				"          ExtendedPrice,",
+				"          TotalDryItems,",
+				"          TotalChillerItems",
+				"     )) ~> factsales"
+			]
+		}
+	}
+}

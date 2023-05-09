@@ -1,0 +1,52 @@
+{
+	"name": "dw_dimsup",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_dw_wwi",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "SupplierKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SupplierId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SupplierName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SupplierCategoryName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PhoneNumber",
+				"type": "nvarchar"
+			},
+			{
+				"name": "FaxNumber",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SupplierReference",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Postalcode",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "WWI",
+			"table": "DimSupplier"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

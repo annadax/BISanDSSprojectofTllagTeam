@@ -1,0 +1,281 @@
+{
+	"name": "factwarehouse",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "stagingque",
+						"type": "DatasetReference"
+					},
+					"name": "stagingwarehouse"
+				},
+				{
+					"dataset": {
+						"referenceName": "dw_dimcus",
+						"type": "DatasetReference"
+					},
+					"name": "dimcus"
+				},
+				{
+					"dataset": {
+						"referenceName": "dw_dimdate",
+						"type": "DatasetReference"
+					},
+					"name": "dimdate"
+				},
+				{
+					"dataset": {
+						"referenceName": "dw_dimstockitem",
+						"type": "DatasetReference"
+					},
+					"name": "dimstockitem"
+				},
+				{
+					"dataset": {
+						"referenceName": "dw_dimsup",
+						"type": "DatasetReference"
+					},
+					"name": "dimsup"
+				},
+				{
+					"dataset": {
+						"referenceName": "dw_dimtrans",
+						"type": "DatasetReference"
+					},
+					"name": "dimtrans"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "factwarehouse11",
+						"type": "DatasetReference"
+					},
+					"name": "factWarehouse"
+				}
+			],
+			"transformations": [
+				{
+					"name": "selectcus"
+				},
+				{
+					"name": "selectdate"
+				},
+				{
+					"name": "lookupcus"
+				},
+				{
+					"name": "lookupdate"
+				},
+				{
+					"name": "selectstock"
+				},
+				{
+					"name": "selectsup"
+				},
+				{
+					"name": "selecttrans"
+				},
+				{
+					"name": "lookupstockitem"
+				},
+				{
+					"name": "lookupsup"
+				},
+				{
+					"name": "lookuptrans"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          StockItemID as integer,",
+				"          TransactionTypeID as integer,",
+				"          CustomerID as integer,",
+				"          SupplierID as integer,",
+				"          TransactionOccurredWhen as date,",
+				"          StockItemTransactionID as integer,",
+				"          InvoiceID as integer,",
+				"          PurchaseOrderID as integer,",
+				"          Quantity as decimal(18,3)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'select \\\\r\\n[StockItemID],\\\\r\\n[TransactionTypeID],\\\\r\\n[CustomerID],\\\\r\\n[SupplierID],\\\\r\\n[TransactionOccurredWhen],\\\\r\\n[StockItemTransactionID],\\\\r\\n[InvoiceID],\\\\r\\n[PurchaseOrderID],\\\\r\\n[Quantity]\\\\r\\nfrom [Warehouse].[StockItemTransactions]',",
+				"     format: 'query') ~> stagingwarehouse",
+				"source(output(",
+				"          CustomerKey as integer,",
+				"          CustomerId as integer,",
+				"          CustomerName as string,",
+				"          CategoryName as string,",
+				"          AccountOpenedDate as date,",
+				"          PrimaryContactPersonID as integer,",
+				"          PotalCode as string,",
+				"          PhoneNumber as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> dimcus",
+				"source(output(",
+				"          DateKey as date,",
+				"          Date as timestamp,",
+				"          FullDate as string,",
+				"          DayOfMonth as string,",
+				"          DayName as string,",
+				"          DayOfWeek as string,",
+				"          DayOfWeekInMonth as string,",
+				"          DayOfWeekInYear as string,",
+				"          DayOfQuarter as string,",
+				"          DayOfYear as string,",
+				"          WeekOfMonth as string,",
+				"          WeekOfQuarter as string,",
+				"          WeekOfYear as string,",
+				"          Month as string,",
+				"          MonthName as string,",
+				"          MonthOfQuarter as string,",
+				"          Quarter as string,",
+				"          QuarterName as string,",
+				"          Year as string,",
+				"          YearName as string,",
+				"          MonthYear as string,",
+				"          MMYYYY as string,",
+				"          FirstDayOfMonth as date,",
+				"          LastDayOfMonth as date,",
+				"          FirstDayOfQuarter as date,",
+				"          LastDayOfQuarter as date,",
+				"          FirstDayOfYear as date,",
+				"          LastDayOfYear as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> dimdate",
+				"source(output(",
+				"          StockItemKey as integer,",
+				"          StockItemID as integer,",
+				"          StockItemName as string,",
+				"          UnitPrice as decimal(18,2),",
+				"          Brand as string,",
+				"          Size as string,",
+				"          IsChillerStock as boolean,",
+				"          LeadTimeDays as integer,",
+				"          ColorName as string,",
+				"          QuantityPerOuter as integer,",
+				"          Barcode as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> dimstockitem",
+				"source(output(",
+				"          SupplierKey as integer,",
+				"          SupplierId as integer,",
+				"          SupplierName as string,",
+				"          SupplierCategoryName as string,",
+				"          PhoneNumber as string,",
+				"          FaxNumber as string,",
+				"          SupplierReference as string,",
+				"          Postalcode as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> dimsup",
+				"source(output(",
+				"          TransactionTypeKey as integer,",
+				"          TransactionTypeId as integer,",
+				"          TransactionType as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> dimtrans",
+				"dimcus select(mapColumn(",
+				"          CustomerKey,",
+				"          CustomerId",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> selectcus",
+				"dimdate select(mapColumn(",
+				"          datekey = DateKey",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> selectdate",
+				"stagingwarehouse, selectcus lookup(stagingwarehouse@CustomerID == selectcus@CustomerId,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookupcus",
+				"lookupcus, selectdate lookup(TransactionOccurredWhen == datekey,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookupdate",
+				"dimstockitem select(mapColumn(",
+				"          StockItemKey,",
+				"          StockItemID",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> selectstock",
+				"dimsup select(mapColumn(",
+				"          SupplierKey,",
+				"          SupplierId",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> selectsup",
+				"dimtrans select(mapColumn(",
+				"          TransactionTypeKey,",
+				"          TransactionTypeId",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> selecttrans",
+				"lookupdate, selectstock lookup(stagingwarehouse@StockItemID == selectstock@StockItemID,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookupstockitem",
+				"lookupstockitem, selectsup lookup(stagingwarehouse@SupplierID == selectsup@SupplierId,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookupsup",
+				"lookupsup, selecttrans lookup(stagingwarehouse@TransactionTypeID == selecttrans@TransactionTypeId,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookuptrans",
+				"lookuptrans sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          StockHoldingKey as integer,",
+				"          DateKey as date,",
+				"          StockItemKey as integer,",
+				"          TransactionTypeKey as integer,",
+				"          CustomerKey as integer,",
+				"          SupplierKey as integer,",
+				"          StockItemTransactionID as integer,",
+				"          InvoiceID as integer,",
+				"          PurchaseOrderID as integer,",
+				"          Quantity as decimal(18,3)",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          DateKey = datekey,",
+				"          StockItemKey,",
+				"          TransactionTypeKey,",
+				"          CustomerKey,",
+				"          SupplierKey,",
+				"          StockItemTransactionID,",
+				"          InvoiceID,",
+				"          PurchaseOrderID,",
+				"          Quantity",
+				"     )) ~> factWarehouse"
+			]
+		}
+	}
+}

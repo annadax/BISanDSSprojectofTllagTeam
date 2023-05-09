@@ -1,0 +1,68 @@
+{
+	"name": "dw_dimstockitem",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_dw_wwi",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "StockItemKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "StockItemID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "StockItemName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "UnitPrice",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			},
+			{
+				"name": "Brand",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Size",
+				"type": "nvarchar"
+			},
+			{
+				"name": "IsChillerStock",
+				"type": "bit"
+			},
+			{
+				"name": "LeadTimeDays",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ColorName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "QuantityPerOuter",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Barcode",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "WWI",
+			"table": "DimStockItem"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

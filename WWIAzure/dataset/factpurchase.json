@@ -1,0 +1,65 @@
+{
+	"name": "factpurchase",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_dw_wwi",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "PurchaseKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "datekey",
+				"type": "date"
+			},
+			{
+				"name": "SupplierKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "StockItemKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "LastReceiptDate",
+				"type": "date"
+			},
+			{
+				"name": "SupplierReference",
+				"type": "nvarchar"
+			},
+			{
+				"name": "OrderedOuters",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ReceivedOuter",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Is Order Finalized",
+				"type": "bit"
+			},
+			{
+				"name": "ExpectedUnitPricePerOuter",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			}
+		],
+		"typeProperties": {
+			"schema": "WWI",
+			"table": "FactPurchase"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,40 @@
+{
+	"name": "dw_dimloc",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_dw_wwi",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "LocationKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CityID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CityName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "StateProvinceName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SalesTerritory",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "WWI",
+			"table": "DimLocation"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,53 @@
+{
+	"name": "dw_dimcus",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_dw_wwi",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CustomerKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CustomerId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CustomerName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CategoryName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "AccountOpenedDate",
+				"type": "date"
+			},
+			{
+				"name": "PrimaryContactPersonID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "PotalCode",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PhoneNumber",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "WWI",
+			"table": "DimCustomer"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

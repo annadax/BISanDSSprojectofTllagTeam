@@ -1,0 +1,109 @@
+{
+	"name": "factsales",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_dw_wwi",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "SaleKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "EmployeeKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "LocationKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CustomerKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "StockItemKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "DateKey",
+				"type": "date"
+			},
+			{
+				"name": "InvoiceID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Quantity",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "UnitPrice",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			},
+			{
+				"name": "TaxRate",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 3
+			},
+			{
+				"name": "TaxAmount",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			},
+			{
+				"name": "LineProfit",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			},
+			{
+				"name": "TotalCost",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			},
+			{
+				"name": "ExtendedPrice",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			},
+			{
+				"name": "TotalExcludingTax",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			},
+			{
+				"name": "TotalDryItems",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "TotalChillerItems",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "WWI",
+			"table": "FactSales"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

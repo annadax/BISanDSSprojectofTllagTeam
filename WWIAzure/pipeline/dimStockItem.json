@@ -1,0 +1,183 @@
+{
+	"name": "dimStockItem",
+	"properties": {
+		"activities": [
+			{
+				"name": "dimStockItem",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": " select\r\n[StockItemID] ,\r\n\r\n[StockItemName],\r\n\r\n[UnitPrice],\r\n[Brand],[Size],\r\n[IsChillerStock],\r\n[LeadTimeDays],\r\n[ColorName],\r\n[QuantityPerOuter],\r\n[Barcode]\r\nfrom \r\n[Warehouse].[StockItems]  as s\r\nleft join [Warehouse].[Colors] as c on s.ColorID =  c.ColorID",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "StockItemID",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "StockItemID",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "StockItemName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "StockItemName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "UnitPrice",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								},
+								"sink": {
+									"name": "UnitPrice",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "Brand",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "Brand",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Size",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "Size",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "IsChillerStock",
+									"type": "Boolean",
+									"physicalType": "bit"
+								},
+								"sink": {
+									"name": "IsChillerStock",
+									"type": "Boolean",
+									"physicalType": "bit"
+								}
+							},
+							{
+								"source": {
+									"name": "LeadTimeDays",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "LeadTimeDays",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "ColorName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "ColorName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "QuantityPerOuter",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "QuantityPerOuter",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Barcode",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "Barcode",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_dimstockitem",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "dw_dimstockitem",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2023-05-06T15:48:16Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

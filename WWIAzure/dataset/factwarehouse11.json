@@ -1,0 +1,68 @@
+{
+	"name": "factwarehouse11",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_dw_wwi",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "StockHoldingKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "DateKey",
+				"type": "date"
+			},
+			{
+				"name": "StockItemKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "TransactionTypeKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CustomerKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SupplierKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "StockItemTransactionID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "InvoiceID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "PurchaseOrderID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Quantity",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "WWI",
+			"table": "FactStoclItemHolding"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,52 @@
+{
+	"name": "dw_dimemp",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_dw_wwi",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "EmployeeKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "EmployeeId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "FullName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PreferredName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "IsSalesperson",
+				"type": "bit"
+			},
+			{
+				"name": "PhoneNumber",
+				"type": "nvarchar"
+			},
+			{
+				"name": "FaxNumber",
+				"type": "nvarchar"
+			},
+			{
+				"name": "EmailAddress",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "WWI",
+			"table": "DimEmployee"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

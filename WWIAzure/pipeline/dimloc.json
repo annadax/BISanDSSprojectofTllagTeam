@@ -1,0 +1,107 @@
+{
+	"name": "dimloc",
+	"properties": {
+		"activities": [
+			{
+				"name": "dimloc",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "select \r\n[CityID],\r\n[CityName],\r\n[StateProvinceName],\r\n[SalesTerritory]\r\nfrom \r\n[Application].[Cities]\r\njoin [Application].[StateProvinces] on \r\n[Application].[Cities].[StateProvinceID] = [Application].[StateProvinces].[StateProvinceID]",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CityID",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "CityID",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "CityName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "CityName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "StateProvinceName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "StateProvinceName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SalesTerritory",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "SalesTerritory",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_dimloc",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "dw_dimloc",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2023-05-06T15:07:19Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

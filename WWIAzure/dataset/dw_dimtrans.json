@@ -1,0 +1,32 @@
+{
+	"name": "dw_dimtrans",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_dw_wwi",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "TransactionTypeKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "TransactionTypeId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "TransactionType",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "WWI",
+			"table": "DimTransactionType"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,212 @@
+{
+	"name": "factpurchase",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "stagingque",
+						"type": "DatasetReference"
+					},
+					"name": "stagingpurchase"
+				},
+				{
+					"dataset": {
+						"referenceName": "dw_dimsup",
+						"type": "DatasetReference"
+					},
+					"name": "dimsup"
+				},
+				{
+					"dataset": {
+						"referenceName": "dw_dimdate",
+						"type": "DatasetReference"
+					},
+					"name": "dimdate"
+				},
+				{
+					"dataset": {
+						"referenceName": "dw_dimstockitem",
+						"type": "DatasetReference"
+					},
+					"name": "dimstockitem"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "factpurchase",
+						"type": "DatasetReference"
+					},
+					"name": "factpurchase"
+				}
+			],
+			"transformations": [
+				{
+					"name": "selectsup"
+				},
+				{
+					"name": "selectdate"
+				},
+				{
+					"name": "selectstockitem"
+				},
+				{
+					"name": "lookupsup"
+				},
+				{
+					"name": "lookupdate"
+				},
+				{
+					"name": "lookupstockitem"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          OrderDate as date,",
+				"          SupplierID as integer,",
+				"          StockItemID as integer,",
+				"          LastReceiptDate as date,",
+				"          SupplierReference as string,",
+				"          OrderedOuters as integer,",
+				"          ReceivedOuters as integer,",
+				"          IsOrderLineFinalized as boolean,",
+				"          ExpectedUnitPricePerOuter as decimal(18,2)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: '-- Staging Purchase\\\\r\\nselect\\\\r\\n[OrderDate],\\\\r\\n[SupplierID],\\\\r\\n[StockItemID],\\\\r\\n[LastReceiptDate], -- theem vao\\\\r\\n[SupplierReference], -- them vao\\\\r\\n[OrderedOuters],\\\\r\\n[ReceivedOuters],\\\\r\\n[IsOrderLineFinalized],\\\\r\\n[ExpectedUnitPricePerOuter]\\\\r\\nfrom [Purchasing].[PurchaseOrderLines] as pol\\\\r\\njoin [Purchasing].[PurchaseOrders] as po on pol.PurchaseOrderID = po.PurchaseOrderID',",
+				"     format: 'query') ~> stagingpurchase",
+				"source(output(",
+				"          SupplierKey as integer,",
+				"          SupplierId as integer,",
+				"          SupplierName as string,",
+				"          SupplierCategoryName as string,",
+				"          PhoneNumber as string,",
+				"          FaxNumber as string,",
+				"          SupplierReference as string,",
+				"          Postalcode as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> dimsup",
+				"source(output(",
+				"          DateKey as date,",
+				"          Date as timestamp,",
+				"          FullDate as string,",
+				"          DayOfMonth as string,",
+				"          DayName as string,",
+				"          DayOfWeek as string,",
+				"          DayOfWeekInMonth as string,",
+				"          DayOfWeekInYear as string,",
+				"          DayOfQuarter as string,",
+				"          DayOfYear as string,",
+				"          WeekOfMonth as string,",
+				"          WeekOfQuarter as string,",
+				"          WeekOfYear as string,",
+				"          Month as string,",
+				"          MonthName as string,",
+				"          MonthOfQuarter as string,",
+				"          Quarter as string,",
+				"          QuarterName as string,",
+				"          Year as string,",
+				"          YearName as string,",
+				"          MonthYear as string,",
+				"          MMYYYY as string,",
+				"          FirstDayOfMonth as date,",
+				"          LastDayOfMonth as date,",
+				"          FirstDayOfQuarter as date,",
+				"          LastDayOfQuarter as date,",
+				"          FirstDayOfYear as date,",
+				"          LastDayOfYear as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> dimdate",
+				"source(output(",
+				"          StockItemKey as integer,",
+				"          StockItemID as integer,",
+				"          StockItemName as string,",
+				"          UnitPrice as decimal(18,2),",
+				"          Brand as string,",
+				"          Size as string,",
+				"          IsChillerStock as boolean,",
+				"          LeadTimeDays as integer,",
+				"          ColorName as string,",
+				"          QuantityPerOuter as integer,",
+				"          Barcode as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> dimstockitem",
+				"dimsup select(mapColumn(",
+				"          SupplierKey,",
+				"          SupplierId",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> selectsup",
+				"dimdate select(mapColumn(",
+				"          datkey = DateKey",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> selectdate",
+				"dimstockitem select(mapColumn(",
+				"          StockItemKey,",
+				"          StockItemID",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> selectstockitem",
+				"stagingpurchase, selectsup lookup(stagingpurchase@SupplierID == selectsup@SupplierId,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookupsup",
+				"lookupsup, selectdate lookup(OrderDate == datkey,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookupdate",
+				"lookupdate, selectstockitem lookup(stagingpurchase@StockItemID == selectstockitem@StockItemID,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookupstockitem",
+				"lookupstockitem sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          PurchaseKey as integer,",
+				"          datekey as date,",
+				"          SupplierKey as integer,",
+				"          StockItemKey as integer,",
+				"          LastReceiptDate as date,",
+				"          SupplierReference as string,",
+				"          OrderedOuters as integer,",
+				"          ReceivedOuter as integer,",
+				"          {Is Order Finalized} as boolean,",
+				"          ExpectedUnitPricePerOuter as decimal(18,2)",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          datekey = datkey,",
+				"          SupplierKey,",
+				"          StockItemKey,",
+				"          LastReceiptDate,",
+				"          SupplierReference,",
+				"          OrderedOuters,",
+				"          ReceivedOuter = ReceivedOuters,",
+				"          {Is Order Finalized} = IsOrderLineFinalized,",
+				"          ExpectedUnitPricePerOuter",
+				"     )) ~> factpurchase"
+			]
+		}
+	}
+}

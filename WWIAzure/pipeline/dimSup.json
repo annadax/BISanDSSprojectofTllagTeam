@@ -1,0 +1,143 @@
+{
+	"name": "dimSup",
+	"properties": {
+		"activities": [
+			{
+				"name": "dimSup",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "select\r\n[SupplierID],\r\n[SupplierName],\r\n[SupplierCategoryName],\r\n[PhoneNumber],\r\n[FaxNumber],\r\n[SupplierReference],\r\n[PostalPostalCode] as Postalcode\r\nfrom\r\n[Purchasing].[Suppliers] as s \r\nleft join [Purchasing].[SupplierCategories] as sc on s.[SupplierCategoryID] = sc.SupplierCategoryID",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "SupplierID",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "SupplierId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "SupplierName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "SupplierName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SupplierCategoryName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "SupplierCategoryName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PhoneNumber",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "PhoneNumber",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "FaxNumber",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "FaxNumber",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SupplierReference",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "SupplierReference",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Postalcode",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "Postalcode",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_dimsup",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "dw_dimsup",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2023-05-06T15:34:55Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

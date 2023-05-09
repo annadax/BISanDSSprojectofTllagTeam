@@ -1,0 +1,143 @@
+{
+	"name": "dimCus",
+	"properties": {
+		"activities": [
+			{
+				"name": "dimcus",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "select\r\nc.CustomerID,\r\n[CustomerName],\r\n[CustomerCategoryName] as CategoryName,\r\n[AccountOpenedDate],\r\n[PrimaryContactPersonID],\r\n[PostalPostalCode] as PotalCode,\r\n[PhoneNumber]\r\nfrom [Sales].[Customers] as c join [Sales].[CustomerCategories] as cc on\r\nc.[CustomerCategoryID] = cc.[CustomerCategoryID]",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CustomerID",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "CustomerId",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "CustomerName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "CustomerName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CategoryName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "CategoryName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "AccountOpenedDate",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "AccountOpenedDate",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "PrimaryContactPersonID",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "PrimaryContactPersonID",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "PotalCode",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "PotalCode",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PhoneNumber",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "PhoneNumber",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_dimcus",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "dw_dimcus",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2023-05-06T15:03:39Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

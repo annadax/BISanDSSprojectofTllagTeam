@@ -1,0 +1,9 @@
+{
+	"name": "WWI-CK",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "20501140-a1ba-4765-8c0a-3aaf4b480a0c",
+		"tenantId": "07acb355-56bc-489b-b98c-8fea440460e8"
+	}
+}

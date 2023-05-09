@@ -1,0 +1,13 @@
+{
+	"name": "stagingque",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_dsWWI",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
